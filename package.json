@@ -1,0 +1,30 @@
+{
+    "name": "@cdmx/wappler_ac_cookie_consent",
+    "version": "1.8.10",
+    "type": "module",
+    "description": "App Connect 2 extension that wraps Cookie Consent library",
+    "devDependencies": {
+        "@rollup/plugin-terser": "^0.4.0",
+        "javascript-obfuscator": "^4.0.2",
+        "rollup": "^3.20.2",
+        "rollup-plugin-copy": "^3.4.0",
+        "rollup-plugin-obfuscator": "^1.0.2",
+        "terser": "^5.16.8"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "cdmx1",
+        "url": "https://github.com/cdmx1"
+    },
+    "keywords": [
+        "wappler-extension",
+        "app-connect",
+        "cookie-consent"
+    ],
+    "dependencies": {
+    },
+    "scripts": {
+        "build": "rollup --config",
+        "publish-dry-run": "npm publish ./dist --access public --dry-run"
+    }
+}

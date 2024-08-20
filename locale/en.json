@@ -1,0 +1,61 @@
+{
+  "consentModal": {
+    "label": "Cookie Consent",
+    "title": "We use cookies!",
+    "description": "This is a description. <br> {{revisionMessage}}",
+    "acceptAllBtn": "Accept all",
+    "acceptNecessaryBtn": "Only necessary",
+    "showPreferencesBtn": "Manage individual preferences",
+    "revisionMessage": "Hi, we've made some changes to our cookie policy since the last time you visited!",
+    "footer": "<a href=\"#path-to-impressum.html\" target=\"_blank\">Impressum</a><a href=\"#path-to-privacy-policy.html\" target=\"_blank\">Privacy Policy</a>"
+  },
+  "preferencesModal": {
+    "title": "Cookie preferences",
+    "acceptAllBtn": "Accept all",
+    "acceptNecessaryBtn": "Only necessary",
+    "savePreferencesBtn": "Save preferences",
+    "closeIconLabel": "Close",
+    "sections": [
+      {
+        "title": "Cookie usage",
+        "description": "We use cookies to ensure the basic functionalities of the website and to enhance your online experience ..."
+      },
+      {
+        "title": "Strictly Necessary Cookies <span class=\"pm__badge\">Always Enabled</span>",
+        "description": "These cookies are essential for the proper functioning of my website. Without these cookies, the website would not work properly",
+        "linkedCategory": "necessary"
+      },
+      {
+        "title": "Performance and Analytics cookies",
+        "description": "These cookies allow the website to remember the choices you have made in the past",
+        "linkedCategory": "analytics",
+        "cookieTable": {
+          "headers": {
+            "name": "Name",
+            "domain": "Service",
+            "description": "Description",
+            "expiration": "Expiration"
+          },
+          "body": [
+            {
+              "name": "_ga",
+              "domain": "Google Analytics",
+              "description": "Cookie set by <a href=\"#das\">Google Analytics</a>.",
+              "expiration": "Expires after 12 days"
+            },
+            {
+              "name": "_gid",
+              "domain": "Google Analytics",
+              "description": "Cookie set by <a href=\"#das\">Google Analytics</a>",
+              "expiration": "Session"
+            }
+          ]
+        }
+      },
+      {
+        "title": "More information",
+        "description": "For any queries in relation to our policy on cookies and your choices, please <a class=\"cc-link\" href=\"#yourdomain.com\">contact us</a>."
+      }
+    ]
+  }
+}

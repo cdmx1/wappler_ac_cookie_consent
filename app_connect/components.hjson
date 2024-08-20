@@ -1,0 +1,1490 @@
+{
+  components: [
+    {
+      type: "dmx-cdmx-cookie-consent",
+      selector: "dmx-cdmx-cookie-consent",
+      groupTitle: "cdmx",
+      groupIcon: "fad fa-lg fa-starfighter color-red",
+      groupTitle2: "Components ",
+      groupIcon2: "fa fa-lg fa-cube comp-components",
+      title: "cdmx Cookie Consent: @@id@@",
+      icon: "fad fa-lg fa-cookie-bite comp-components",
+      //TODO Layered icons don't work. Pending fix.
+      // icon: [
+      //   {
+      //     prefix: "fas",
+      //     iconName: "cookie-bite",
+      //     classes: "color-yellow"
+      //   },
+      //   {
+      //     prefix: "fas",
+      //     iconName: "question",
+      //     classes: "color-green",
+      //     transform: {
+      //       size: 8,
+      //       x: 10,
+      //       y: -8
+      //     }
+      //   }
+      // ],
+      state: "closed",
+      anyParent: true,
+      template: "<dmx-cdmx-cookie-consent id=\"@@id@@\" dmx-bind:categories=\"{necessary:{enabled:true,readOnly:true}}\"></dmx-cdmx-cookie-consent>",
+      baseName: "consent",
+      help: "A component that implements cookie consent on the browser",
+      dataScheme: [
+        {
+          name: "config",
+          type: "object",
+          sub: [
+            {
+              name: "autoClearCookies",
+              type: "boolean",
+            },
+            {
+              name: "autoShow",
+              type: "boolean",
+            },
+            {
+              name: "categories",
+              type: "object",
+            },
+            {
+              name: "cookie",
+              type: "object",
+              sub: [
+                {
+                  name: "domain",
+                  type: "string",
+                },
+                {
+                  name: "expiryAfterDays",
+                  type: "number",
+                },
+                {
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  name: "path",
+                  type: "string",
+                },
+                {
+                  name: "sameSite",
+                  type: "string",
+                }
+              ]
+            },
+            {
+              name: "disablePageInteraction",
+              type: "boolean",
+            },
+            {
+              name: "guiOptions",
+              type: "object",
+              sub: [
+                {
+                  name: "consentModal",
+                  type: "object",
+                },
+                {
+                  name: "preferencesModal",
+                  type: "object",
+                }
+              ]
+            },
+            {
+              name: "hideFromBots",
+              type: "boolean",
+            },
+            {
+              name: "language",
+              type: "object",
+              sub: [
+                {
+                  name: "default",
+                  type: "string",
+                },
+                {
+                  name: "translations",
+                  type: "object",
+                }
+              ]
+            },
+            {
+              name: "lazyHtmlGeneration",
+              type: "boolean",
+            },
+            {
+              name: "manageScriptTags",
+              type: "boolean",
+            },
+            {
+              name: "mode",
+              type: "string",
+            },
+            {
+              name: "revision",
+              type: "number",
+            },
+            {
+              name: "root",
+              type: "string",
+            }
+          ]
+        },
+        {
+          name: "cookie",
+          type: "object",
+          sub: [
+            {
+              name: "categories",
+              type: "array",
+            },
+            {
+              name: "consentId",
+              type: "string",
+            },
+            {
+              name: "consentTimestamp",
+              type: "string",
+            },
+            {
+              name: "data",
+              type: "object",
+            },
+            {
+              name: "lastConsentTimestamp",
+              type: "string",
+            },
+            {
+              name: "revision",
+              type: "number",
+            },
+            // TODO Services not yet implemented
+            // {
+            //   name: "services",
+            //   type: "object",
+            // }
+          ]
+        },
+        {
+          name: "currentLng",
+          type: "string"
+        },
+        {
+          name: "userPreferences",
+          type: "object",
+          sub: [
+            {
+              name: "acceptedCategories",
+              type: "array",
+            },
+            // TODO Services not yet implemented
+            // {
+            //   name: "acceptedServices",
+            //   type: "array",
+            // },
+            {
+              name: "rejectedCategories",
+              type: "array",
+            },
+            // TODO Services not yet implemented
+            // {
+            //   name: "rejectedServices",
+            //   type: "array",
+            // },
+          ]
+        }
+      ],
+      outputType: "object",
+      dataPick: true,
+      properties: [
+        {
+          group: "ℹ️ Information",
+          variables: [
+            {
+              name: "help",
+              type: "static",
+              help: "This component makes use of the library cookieconsent.<br>You can check its documentation \n<a style=\"vertical-align: baseline; font-size: 14x; color: green\" \nhref=\"https://cookieconsent.orestbida.com\" target=\"_blank\">here</a>"
+            }
+          ]
+        },
+        {
+          group: "⚙️ Properties",
+          variables: [
+            {
+              name: "id",
+              attribute: "id",
+              title: "ID",
+              type: "text",
+              required: true
+            },
+            {
+              name: "help",
+              type: "static",
+              help: "If you are waiting for config data to become available from any source<br>\nmark this component as \"No Auto Load\" and call the run() method manually<br>\nwhen the data is available."
+            },
+            {
+              name: "noLoad",
+              hasAttribute: "noload",
+              title: "No Auto Load",
+              type: "boolean",
+              defaultValue: "",
+              initValue: true,
+              help: "If true, the component will not be loaded automatically\nand you will need to call the run() method manually"
+            },
+            {
+              name: "root",
+              attribute: "root",
+              title: "Root",
+              type: "text",
+              help: "Root (parent) element where the modal will be appended as a last child"
+            },
+            {
+              name: "mode",
+              attribute: "mode",
+              title: "Mode",
+              type: "droplist",
+              required: true,
+              help: "Changes the scripts' activation logic when consent is not valid",
+              defaultValue: "opt-in",
+              values: [
+                {
+                  title: "Opt-In",
+                  value: "opt-in"
+                },
+                {
+                  title: "Opt-Out",
+                  value: "opt-out"
+                }
+              ]
+            },
+            {
+              name: "revision",
+              attribute: "revision",
+              title: "Revision",
+              type: "number",
+              defaultValue: 0,
+              help: "Revision number. If the revision number is different from the one stored in the cookie, the modal will be shown again"
+            },
+            {
+              name: "noAutoShow",
+              attribute: "noautoshow",
+              title: "Don't show modal automatically",
+              type: "boolean",
+              defaultValue: "",
+              help: "If true, the modal will not be shown automatically"
+            },
+            {
+              name: "noManageScriptTags",
+              attribute: "nomanagescripttags",
+              title: "Don't intercept scripts",
+              type: "boolean",
+              defaultValue: "",
+              help: "If true, the script tags will not be managed by the library automatically"
+            },
+            {
+              name: "noAutoClearCookies",
+              attribute: "noautoclearcookies",
+              title: "Don't clear cookies",
+              type: "boolean",
+              defaultValue: "",
+              help: "If true, the cookies will not be cleared automatically when a user rejects a specific category"
+            },
+            {
+              name: "noHideFromBots",
+              attribute: "nohidefrombots",
+              title: "Allow bots to crawl the modal",
+              type: "boolean",
+              defaultValue: "",
+              help: "If true, the modal will not be hidden from bots"
+            },
+            {
+              name: "disablePageInteraction",
+              attribute: "disablepageinteraction",
+              title: "Render overlay and block scrolling",
+              type: "boolean",
+              defaultValue: "",
+              help: "If true, the page will not be scrollable when the modal is shown"
+            },
+            {
+              name: "noLazyHtmlGeneration",
+              attribute: "nolazyhtmlgeneration",
+              title: "Don't apply lazy HTML generation",
+              type: "boolean",
+              defaultValue: "",
+              initValue: true,
+              help: "If true, the HTML will be generated immediately. Affects TTI (time to interactive)"
+            }
+          ]
+        },
+        {
+          group: "🍪 Cookie customization",
+          variables: [
+            {
+              name: "help",
+              type: "static",
+              help: "Customize the cookie in case you need to change the default values."
+            },
+            {
+              name: "cookie",
+              attributeStartsWith: "dmx-bind",
+              attribute: "cookie",
+              title: "Customize the cookie",
+              type: "boolean",
+              display: "fieldset",
+              show: [
+                "name",
+                "domain",
+                "path",
+                "expiresAfterDays",
+                "sameSite"
+              ],
+              noChangeOnHide: true,
+              groupEnabler: true,
+              children: [
+                {
+                  name: "name",
+                  attribute: "dmx-bind:cookie",
+                  objectKey: "name",
+                  title: "Name",
+                  type: "text",
+                  dataBindings: true,
+                  defaultValue: "'cc_cookie'",
+                  initDisplay: "none",
+                  help: "Name of the cookie"
+                },
+                {
+                  name: "domain",
+                  attribute: "dmx-bind:cookie",
+                  objectKey: "domain",
+                  title: "Domain",
+                  type: "text",
+                  dataBindings: true,
+                  defaultValue: "'window.location.hostname'",
+                  initDisplay: "none",
+                  help: "Specifies which hosts can receive a cookie. Retrieved automatically from the current domain if not specified"
+                },
+                {
+                  name: "path",
+                  attribute: "dmx-bind:cookie",
+                  objectKey: "path",
+                  title: "Path",
+                  type: "text",
+                  dataBindings: true,
+                  defaultValue: "'/'",
+                  initDisplay: "none",
+                  help: "Indicates a URL path that must exist in the requested URL in order to send the Cookie header."
+                },
+                {
+                  name: "expiresAfterDays",
+                  attribute: "dmx-bind:cookie",
+                  objectKey: "expires",
+                  title: "Expires after days",
+                  type: "text",
+                  dataBindings: true,
+                  defaultValue: "'182'",
+                  initDisplay: "none",
+                  help: "Number of days after which the cookie will expire"
+                },
+                {
+                  name: "sameSite",
+                  attribute: "dmx-bind:cookie",
+                  objectKey: "sameSite",
+                  title: "SameSite",
+                  type: "droplist",
+                  defaultValue: "'Lax'",
+                  initDisplay: "none",
+                  help: "Specifies whether the cookie will be sent with cross-site requests, and whether it should be sent when a cross-site request uses the method.",
+                  values: [
+                    {
+                      title: "Lax",
+                      value: "'Lax'"
+                    },
+                    {
+                      title: "Strict",
+                      value: "'Strict'"
+                    },
+                    {
+                      title: "None",
+                      value: "'None'"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          group: "🎨 UI customization",
+          variables: [
+            {
+              name: "help",
+              type: "static",
+              help: "Customize the modals aspect"
+            },
+            {
+              name: "consentModal",
+              attributeStartsWith: "dmx-bind",
+              attribute: "consentmodal",
+              title: "Consent modal",
+              type: "boolean",
+              display: "fieldset",
+              show: [
+                "layoutModal1",
+                "position1",
+                "flipButtons1",
+                "equalWeightButtons1"
+              ],
+              hide: [
+                "positionBar1"
+              ],
+              noChangeOnHide: true,
+              groupEnabler: true,
+              children: [
+                {
+                  name: "layoutModal1",
+                  attribute: "dmx-bind:consentmodal",
+                  objectKey: "layout",
+                  title: "Layout",
+                  type: "droplist",
+                  defaultValue: "'box'",
+                  initDisplay: "none",
+                  values: [
+                    {
+                      title: "Box",
+                      value: "'box'",
+                      hide: [
+                        "positionBar1"
+                      ]
+                    },
+                    {
+                      title: "Box - Inline",
+                      value: "'box inline'",
+                      hide: [
+                        "positionBar1"
+                      ]
+                    },
+                    {
+                      title: "Box - Wide",
+                      value: "'box wide'",
+                      hide: [
+                        "positionBar1"
+                      ]
+                    },
+                    {
+                      title: "Cloud",
+                      value: "'cloud'",
+                      hide: [
+                        "positionBar1"
+                      ]
+                    },
+                    {
+                      title: "Cloud - Inline",
+                      value: "'cloud inline'",
+                      hide: [
+                        "positionBar1"
+                      ]
+                    },
+                    {
+                      title: "Bar",
+                      value: "'bar'",
+                      show: [
+                        "positionBar1"
+                      ],
+                      hide: [
+                        "position1"
+                      ]
+                    },
+                    {
+                      title: "Bar - Inline",
+                      value: "'bar inline'",
+                      show: [
+                        "positionBar1"
+                      ],
+                      hide: [
+                        "position1"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: "position1",
+                  attribute: "dmx-bind:consentmodal",
+                  objectKey: "position",
+                  title: "Position",
+                  type: "droplist",
+                  defaultValue: "'bottom right'",
+                  initDisplay: "none",
+                  values: [
+                    {
+                      title: "Top - Left",
+                      value: "'top left'"
+                    },
+                    {
+                      title: "Top - Center",
+                      value: "'top center'"
+                    },
+                    {
+                      title: "Top - Right",
+                      value: "'top right'"
+                    },
+                    {
+                      title: "Middle - Left",
+                      value: "'middle left'"
+                    },
+                    {
+                      title: "Middle - Center",
+                      value: "'middle center'"
+                    },
+                    {
+                      title: "Middle - Right",
+                      value: "'middle right'"
+                    },
+                    {
+                      title: "Bottom - Left",
+                      value: "'bottom left'"
+                    },
+                    {
+                      title: "Bottom - Center",
+                      value: "'bottom center'"
+                    },
+                    {
+                      title: "Bottom - Right",
+                      value: "'bottom right'"
+                    }
+                  ]
+                },
+                {
+                  name: "positionBar1",
+                  attribute: "dmx-bind:consentmodal",
+                  objectKey: "position",
+                  title: "Position",
+                  type: "droplist",
+                  defaultValue: "'bottom'",
+                  initDisplay: "none",
+                  values: [
+                    {
+                      title: "Top",
+                      value: "'top'"
+                    },
+                    {
+                      title: "Bottom",
+                      value: "'bottom'"
+                    }
+                  ]
+                },
+                {
+                  name: "flipButtons1",
+                  attribute: "dmx-bind:consentmodal",
+                  objectKey: "flipButtons",
+                  title: "Flip buttons",
+                  type: "boolean",
+                  defaultValue: false,
+                  initDisplay: "none"
+                },
+                {
+                  name: "equalWeightButtons1",
+                  attribute: "dmx-bind:consentmodal",
+                  objectKey: "equalWeightButtons",
+                  title: "Equal weight buttons",
+                  type: "boolean",
+                  defaultValue: true,
+                  initDisplay: "none"
+                }
+              ]
+            },
+            {
+              name: "preferencesModal",
+              attributeStartsWith: "dmx-bind",
+              attribute: "preferencesmodal",
+              title: "Preferences modal",
+              type: "boolean",
+              display: "fieldset",
+              show: [
+                "layoutModal2",
+                "position2",
+                "flipButtons2",
+                "equalWeightButtons2"
+              ],
+              hide: [
+                "positionBar2"
+              ],
+              noChangeOnHide: true,
+              groupEnabler: true,
+              children: [
+                {
+                  name: "layoutModal2",
+                  attribute: "dmx-bind:preferencesmodal",
+                  objectKey: "layout",
+                  title: "Layout",
+                  type: "droplist",
+                  defaultValue: "'box'",
+                  initDisplay: "none",
+                  values: [
+                    {
+                      title: "Box",
+                      value: "'box'",
+                      hide: [
+                        "positionBar2"
+                      ]
+                    },
+                    {
+                      title: "Bar",
+                      value: "'bar'",
+                      hide: [
+                        "position2"
+                      ],
+                      show: [
+                        "positionBar2"
+                      ]
+                    },
+                    {
+                      title: "Bar - Wide",
+                      value: "'bar wide'",
+                      show: [
+                        "positionBar2"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: "positionBar2",
+                  attribute: "dmx-bind:preferencesmodal",
+                  objectKey: "position",
+                  title: "Position",
+                  type: "droplist",
+                  defaultValue: "'bottom'",
+                  initDisplay: "none",
+                  values: [
+                    {
+                      title: "Left",
+                      value: "'left'"
+                    },
+                    {
+                      title: "Right",
+                      value: "'right'"
+                    }
+                  ]
+                },
+                {
+                  name: "flipButtons2",
+                  attribute: "dmx-bind:preferencesmodal",
+                  objectKey: "flipButtons",
+                  title: "Flip buttons",
+                  type: "boolean",
+                  defaultValue: false,
+                  initDisplay: "none"
+                },
+                {
+                  name: "equalWeightButtons2",
+                  attribute: "dmx-bind:preferencesmodal",
+                  objectKey: "equalWeightButtons",
+                  title: "Equal weight buttons",
+                  type: "boolean",
+                  defaultValue: true,
+                  initDisplay: "none"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          group: "🇺🇳 Language",
+          variables: [
+            {
+              name: "help",
+              type: "static",
+              help: "If you don't configure the languages, the default language(english) will be used.<br>\nThe english translation file can be found in <span style=\"padding: 1px 2px; border-radius: 3px; \nvertical-align: baseline; font-size: 14x; background-color: darkgreen\">public/js/cdmx-cookie-consent/locale</span>"
+            },
+            {
+              name: "language",
+              attributeStartsWith: "dmx-bind",
+              attribute: "language",
+              title: "Configure languages",
+              type: "boolean",
+              display: "fieldset",
+              show: [
+                "defaultLng",
+                "listLng"
+              ],
+              noChangeOnHide: true,
+              groupEnabler: true,
+              children: [
+                {
+                  name: "defaultLng",
+                  attribute: "dmx-bind:language",
+                  objectKey: "default",
+                  title: "Default language",
+                  type: "text",
+                  dataBindings: true,
+                  help: "Default language for the modal.",
+                  required: true,
+                  initDisplay: "none"
+                },
+                {
+                  name: "listLng",
+                  attribute: "dmx-bind:language",
+                  title: "File path",
+                  objectKey: "translations",
+                  type: "grid",
+                  dataBindings: true,
+                  key: "language",
+                  keyValue: "path",
+                  jsonFormat: true,
+                  encloseBT: true,
+                  jsonBT: true,
+                  initDisplay: "none",
+                  columns: [
+                    {
+                      field: "language",
+                      caption: "Language",
+                      size: "30%",
+                      editable: {
+                        type: "text"
+                      }
+                    },
+                    {
+                      field: "path",
+                      caption: "Path",
+                      size: "70%",
+                      editable: {
+                        type: "filepicker"
+                      }
+                    }
+                  ],
+                  newRecord: {
+                    name: "",
+                    value: ""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          group: "📒 Categories",
+          variables: [
+            {
+              name: "categories",
+              attributeStartsWith: "dmx-bind",
+              attribute: "categories",
+              title: "Configure categories",
+              type: "boolean",
+              display: "fieldset",
+              show: [
+                "listCategories"
+              ],
+              noChangeOnHide: true,
+              groupEnabler: true,
+              children: [
+                {
+              name: "help",
+              type: "static",
+              help: "Autoclear will clear the cookies when the user rejects the cookie category.<br>Check the docs for autoclear <a style=\"vertical-align: baseline; font-size:14x; color: green\" href=\"https://cookieconsent.orestbida.com/reference/configuration-reference.html#category-autoclear\" target=\"_blank\">here</a> to understand how to input the data"
+            },
+                {
+                  name: "listCategories",
+                  attribute: "dmx-bind:categories",
+                  title: "Categories",
+                  type: "grid",
+                  dataBindings: true,
+                  key: "name",
+                  jsonFormat: true,
+                  encloseBT: true,
+                  jsonBT: true,
+                  initDisplay: "none",
+                  columns: [
+                    {
+                      field: "name",
+                      caption: "Name",
+                      size: "25%",
+                      editable: {
+                        type: "text"
+                      }
+                    },
+                    {
+                      field: "enabled",
+                      caption: "Enabled",
+                      size: "25%",
+                      editable: {
+                        type: "list",
+                        items: [
+                          {
+                            id: "true",
+                            text: true
+                          },
+                          {
+                            id: "false",
+                            text: false
+                          }
+                        ],
+                        showAll: false
+                      }
+                    },
+                    {
+                      field: "readOnly",
+                      caption: "ReadOnly",
+                      size: "25%",
+                      editable: {
+                        type: "list",
+                        items: [
+                          {
+                            id: "true",
+                            text: true
+                          },
+                          {
+                            id: "false",
+                            text: false
+                          }
+                        ],
+                        showAll: true
+                      }
+                    },
+                    {
+                      field: "autoClear",
+                      caption: "Auto Clear",
+                      size: "25%",
+                      editable: {
+                        type: "string"
+                      }
+                    }
+                  ],
+                  newRecord: {
+                    name: "",
+                    value: ""
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      actionsScheme: [
+        {
+          addTitle: "Run",
+          title: "Run",
+          name: "run",
+          icon: "fa fa-lg fa-play",
+          state: "opened",
+          help: "Configures the plugin with the provided configuration<br>\nThe config argument is required and must<br>\ncontain — at least — the categories and language properties.",
+          properties: [
+            {
+              group: "⚙️ Options",
+              optionsInObject: true,
+              variables: [
+                {
+                  name: "1",
+                  optionName: "1",
+                  title: "Config",
+                  type: "text",
+                  dataBindings: true,
+                  help: "Config object. See CookieConsent documentation for more info"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          addTitle: "Show Consent",
+          title: "Show Consent",
+          name: "showConsent",
+          icon: "fa fa-lg fa-eye",
+          state: "opened",
+          help: "Shows the consent modal",
+          properties: [
+            {
+              group: "Parameters",
+              collapsable: "true",
+              collapsed: "true",
+              variables: [
+                {
+                  name: "1",
+                  optionName: "1",
+                  title: "Force",
+                  type: "boolean",
+                  defaultValue: false,
+                  initValue: false,
+                  help: "If consent was already provided it will force show the modal again"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          addTitle: "Hide Consent",
+          title: "Hide Consent",
+          name: "hideConsent",
+          icon: "fa fa-lg fa-eye-slash",
+          state: "opened",
+          help: "Hides the consent modal"
+        },
+        {
+          addTitle: "Show Preferences",
+          title: "Show Preferences",
+          name: "showPreferences",
+          icon: "fa fa-lg fa-eye",
+          state: "opened",
+          help: "Shows the preferences modal"
+        },
+        {
+          addTitle: "Hide Preferences",
+          title: "Hide Preferences",
+          name: "hidePreferences",
+          icon: "fa fa-lg fa-eye-slash",
+          state: "opened",
+          help: "Hides the preferences modal"
+        },
+        {
+          addTitle: "Accept Categories",
+          title: "Accept Categories",
+          name: "acceptCategory",
+          icon: "fa fa-lg fa-vote-yea",
+          state: "opened",
+          help: "Accepts or excludes categories",
+          properties: [
+            {
+              group: "Options",
+              variables: [
+                {
+                  name: "1",
+                  optionName: "1",
+                  title: "Accept",
+                  type: "text",
+                  dataBindings: true,
+                  help: "string | string[] | all | [] | empty"
+                },
+                {
+                  name: "2",
+                  optionName: "2",
+                  title: "Exclude",
+                  type: "text",
+                  dataBindings: true,
+                  help: "string[]"
+                }
+              ]
+            }
+          ]
+        },
+        // {
+        //   addTitle: "Accepted Category",
+        //   title: "Accepted Category",
+        //   name: "acceptedCategory",
+        //   icon: "fa fa-lg fa-question",
+        //   state: "opened",
+        //   help: "Returns true if the specified category was accepted, otherwise false",
+        //   properties: [
+        //     {
+        //       group: "Options",
+        //       variables: [
+        //         {
+        //           name: "1",
+        //           optionName: "1",
+        //           title: "Category",
+        //           type: "text",
+        //           dataBindings: true,
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // },
+        // {
+        //   addTitle: "Valid Consent",
+        //   title: "Valid Consent",
+        //   name: "validConsent",
+        //   icon: "fa fa-lg fa-badge-check",
+        //   state: "opened",
+        //   help: "Returns true if consent is valid"
+        // },
+        // {
+        //   addTitle: "Valid Cookie",
+        //   title: "Valid Cookie",
+        //   name: "validCookie",
+        //   icon: "fa fa-lg fa-cookie",
+        //   state: "opened",
+        //   help: "Returns true if the specified cookie is valid (it exists and its content is not empty)",
+        //   properties: [
+        //     {
+        //       group: "Options",
+        //       variables: [
+        //         {
+        //           name: "1",
+        //           optionName: "1",
+        //           title: "Cookie Name",
+        //           type: "text",
+        //           dataBindings: true,
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // },
+        {
+          addTitle: "Erase Cookies",
+          title: "Erase Cookies",
+          name: "eraseCookies",
+          icon: "fa fa-lg fa-trash",
+          state: "opened",
+          help: "Removes one or multiple cookies",
+          properties: [
+            {
+              group: "Options",
+              variables: [
+                {
+                  name: "1",
+                  optionName: "1",
+                  title: "Cookies",
+                  type: "text",
+                  dataBindings: true,
+                  help: "string | RegExp | (string | RegExp)[]"
+                },
+                {
+                  name: "2",
+                  optionName: "2",
+                  title: "Path",
+                  type: "text",
+                  dataBindings: true,
+                  help: "string"
+                },
+                {
+                  name: "3",
+                  optionName: "3",
+                  title: "Domain",
+                  type: "text",
+                  dataBindings: true,
+                  help: "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          addTitle: "Load Script",
+          title: "Load Script",
+          name: "loadScript",
+          icon: "fa fa-lg fa-truck-loading",
+          state: "opened",
+          help: "Loads script files (.js).",
+          properties: [
+            {
+              group: "Options",
+              variables: [
+                {
+                  name: "1",
+                  optionName: "1",
+                  title: "Path",
+                  //type: "text",
+                  type: "file",
+                  //type: "text",
+                  type: "file",
+                  dataBindings: true,
+                  help: "string"
+                },
+                {
+                  name: "2",
+                  optionName: "2",
+                  title: "Attributes",
+                  type: "text",
+                  dataBindings: true,
+                  help: "Script attributes {[key: string]: string}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          addTitle: "Set Language",
+          title: "Set Language",
+          name: "setLanguage",
+          icon: "fa fa-lg fa-globe",
+          state: "opened",
+          help: "Changes the modal's language.",
+          properties: [
+            {
+              group: "Options",
+              variables: [
+                {
+                  name: "1",
+                  optionName: "1",
+                  title: "Language",
+                  type: "text",
+                  dataBindings: true,
+                  help: "string"
+                },
+                {
+                  name: "2",
+                  optionName: "2",
+                  title: "Force",
+                  type: "boolean",
+                  defaultValue: false,
+                  help: "Forcefully refresh modals (re-generates the html content)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          addTitle: "Set Cookie Data",
+          title: "Set Cookie Data",
+          name: "setCookieData",
+          icon: "fa fa-lg fa-save",
+          state: "opened",
+          help: "Save custom data into the cookie",
+          properties: [
+            {
+              group: "Options",
+              variables: [
+                {
+                  name: "1",
+                  optionName: "1",
+                  title: "Value",
+                  type: "text",
+                  dataBindings: true,
+                  help: "string"
+                },
+                {
+                  name: "2",
+                  optionName: "2",
+                  title: "Mode",
+                  type: "droplist",
+                  defaultValue: "'overwrite'",
+                  values: [
+                    {
+                      title: "Overwrite",
+                      value: "'overwrite'"
+                    },
+                    {
+                      title: "Update",
+                      value: "'update'"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          addTitle: "Reset Cookie Consent",
+          title: "Reset Cookie Consent",
+          name: "reset",
+          icon: "fa fa-lg fa-history",
+          state: "opened",
+          help: "Resets all internal pointers and config. settings<br>\nOnce this method is called, the plugin won't be able to detect<br>\nalready executed script tags with a data-category attribute.",
+          properties: [
+            {
+              group: "Options",
+              variables: [
+                {
+                  name: "1",
+                  optionName: "1",
+                  title: "Delete cookie",
+                  type: "boolean",
+                  defaultValue: false,
+                  help: "Delete the plugin's cookie. The user will be prompted once again to express their consent"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      children: [],
+      allowed-children: {},
+      copyFiles: [
+        {
+          src: "index.js",
+          dst: "js/cdmx-cookie-consent/index.js"
+        },
+        {
+          src: "locale",
+          dst: "js/cdmx-cookie-consent/locale"
+        }
+      ],
+      linkFiles: [
+        {
+          src: "js/cdmx-cookie-consent/index.js",
+          type: "js",
+          module: true
+        },
+        {
+          src: "https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css",
+          type: "css"
+        }
+      ],
+      cssOrder: [],
+      jsOrder: []
+    }
+  ],
+  attributes: [],
+  events: [
+  {
+    name: "dmx-cdmx-cookieconsent-firstconsent",
+    attributeStartsWith: "dmx-on",
+    attribute: "firstconsent",
+    title: "First Consent",
+    type: "event",
+    icon: "fa fa-lg fa-handshake",
+    groupTitle: "cdmx Cookie Consent",
+    groupIcon: "fad fa-lg fa-cookie-bite",
+    help: "Fired on the user's first consent action.",
+    dataScheme: [
+      {
+        name: "cookie",
+        type: "object",
+        sub: [
+          {
+            name: "categories",
+            type: "array"
+          },
+          {
+            name: "revision",
+            type: "number"
+          },
+          {
+            name: "data",
+            type: "object"
+          },
+          {
+            name: "consentId",
+            type: "text"
+          },
+          {
+            name: "consentTimestamp",
+            type: "text"
+          },
+          {
+            name: "lastConsentTimestamp",
+            type: "text"
+          }
+        ]
+      }
+    ],
+    children: [
+      {
+        name: "eventFirstConsentAction",
+        attribute: "action",
+        type: "action",
+        help: "Choose the action to execute when first consent is given."
+      }
+    ]
+  },
+  {
+    name: "dmx-cdmx-cookieconsent-consent",
+    attributeStartsWith: "dmx-on",
+    attribute: "consent",
+    title: "Consent",
+    type: "event",
+    icon: "fa fa-lg fa-handshake",
+    groupTitle: "cdmx Cookie Consent",
+    groupIcon: "fad fa-lg fa-cookie-bite",
+    help: "Fired on each page load once the consent has been given or denied.",
+    dataScheme: [
+      {
+        name: "cookie",
+        type: "object",
+        sub: [
+          {
+            name: "categories",
+            type: "array"
+          },
+          {
+            name: "revision",
+            type: "number"
+          },
+          {
+            name: "data",
+            type: "object"
+          },
+          {
+            name: "consentId",
+            type: "text"
+          },
+          {
+            name: "consentTimestamp",
+            type: "text"
+          },
+          {
+            name: "lastConsentTimestamp",
+            type: "text"
+          }
+        ]
+      }
+    ],
+    children: [
+      {
+        name: "eventConsentAction",
+        attribute: "action",
+        type: "action",
+        help: "Choose the action to execute when consent is given or denied."
+      }
+    ]
+  },
+  {
+    name: "dmx-cdmx-cookieconsent-change",
+    attributeStartsWith: "dmx-on",
+    attribute: "change",
+    title: "Change",
+    type: "event",
+    icon: "fa fa-lg fa-money-check-edit",
+    groupTitle: "cdmx Cookie Consent",
+    groupIcon: "fad fa-lg fa-cookie-bite",
+    help: "Fired when consent settings are changed.",
+    dataScheme: [
+      {
+        name: "cookie",
+        type: "object",
+        sub: [
+          {
+            name: "categories",
+            type: "array"
+          },
+          {
+            name: "revision",
+            type: "number"
+          },
+          {
+            name: "data",
+            type: "object"
+          },
+          {
+            name: "consentId",
+            type: "text"
+          },
+          {
+            name: "consentTimestamp",
+            type: "text"
+          },
+          {
+            name: "lastConsentTimestamp",
+            type: "text"
+          }
+        ]
+      },
+      {
+        name: "changedCategories",
+        type: "array"
+      }
+    ],
+    children: [
+      {
+        name: "eventChangeAction",
+        attribute: "action",
+        type: "action",
+        help: "Choose the action to execute when consent settings are changed."
+      }
+    ]
+  },
+  {
+    name: "dmx-cdmx-cookieconsent-modalshow",
+    attributeStartsWith: "dmx-on",
+    attribute: "modalshow",
+    title: "Modal Show",
+    type: "event",
+    icon: "fa fa-lg fa-eye",
+    groupTitle: "cdmx Cookie Consent",
+    groupIcon: "fad fa-lg fa-cookie-bite",
+    help: "Fired when any consent or preferences modal is shown.",
+    dataScheme: [
+      {
+        name: "modal",
+        type: "string"
+      }
+    ],
+    children: [
+      {
+        name: "eventModalShowAction",
+        attribute: "action",
+        type: "action",
+        help: "Choose the action to execute when a modal is shown."
+      }
+    ]
+  },
+  {
+    name: "dmx-cdmx-cookieconsent-modalhide",
+    attributeStartsWith: "dmx-on",
+    attribute: "modalhide",
+    title: "Modal Hide",
+    type: "event",
+    icon: "fa fa-lg fa-eye-slash",
+    groupTitle: "cdmx Cookie Consent",
+    groupIcon: "fad fa-lg fa-cookie-bite",
+    help: "Fired when any consent or preferences modal is hidden.",
+    dataScheme: [
+      {
+        name: "modal",
+        type: "string"
+      }
+    ],
+    children: [
+      {
+        name: "eventModalHideAction",
+        attribute: "action",
+        type: "action",
+        help: "Choose the action to execute when a modal is hidden."
+      }
+    ]
+  },
+  {
+    name: "dmx-cdmx-cookieconsent-modalready",
+    attributeStartsWith: "dmx-on",
+    attribute: "modalready",
+    title: "Modal Ready",
+    type: "event",
+    icon: "fa fa-lg fa-alarm-clock",
+    groupTitle: "cdmx Cookie Consent",
+    groupIcon: "fad fa-lg fa-cookie-bite",
+    help: "Fired when any consent or preferences modal is created and appended to the DOM.",
+    dataScheme: [
+      {
+        name: "modal",
+        type: "object",
+        sub: [
+          {
+            name: "modal",
+            type: "string"
+          }
+        ]
+      }
+    ],
+    children: [
+      {
+        name: "eventModalReadyAction",
+        attribute: "action",
+        type: "action",
+        help: "Choose the action to execute when a modal is ready."
+      }
+    ]
+  },
+  {
+    name: "dmx-cdmx-cookieconsent-lngchange",
+    attributeStartsWith: "dmx-on",
+    attribute: "lngchange",
+    title: "Language Change",
+    type: "event",
+    icon: "fa fa-lg fa-globe",
+    groupTitle: "cdmx Cookie Consent",
+    groupIcon: "fad fa-lg fa-cookie-bite",
+    help: "Fired when the language of the component is changed.",
+    dataScheme: [
+      {
+        name: "modal",
+        type: "object",
+        sub: [
+          {
+            name: "language",
+            type: "string"
+          }
+        ]
+      }
+    ],
+    children: [
+      {
+        name: "eventLngChangeAction",
+        attribute: "action",
+        type: "action",
+        help: "Choose the action to execute when the language is changed."
+      }
+    ]
+  }
+]
+
+}
