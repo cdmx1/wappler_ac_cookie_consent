@@ -7,7 +7,7 @@
       groupIcon: "fad fa-lg fa-starfighter color-red",
       groupTitle2: "Components ",
       groupIcon2: "fa fa-lg fa-cube comp-components",
-      title: "cdmx Cookie Consent: @@id@@",
+      title: "Cookie Consent: @@id@@",
       icon: "fad fa-lg fa-cookie-bite comp-components",
       //TODO Layered icons don't work. Pending fix.
       // icon: [
@@ -107,7 +107,7 @@
                 },
                 {
                   name: "translations",
-                  type: "object",
+                   type: "object",
                 }
               ]
             },
@@ -129,6 +129,10 @@
             },
             {
               name: "root",
+              type: "string",
+            },
+            {
+              name: "gtm_id",
               type: "string",
             }
           ]
@@ -240,6 +244,13 @@
               title: "Root",
               type: "text",
               help: "Root (parent) element where the modal will be appended as a last child"
+            },
+            {
+              name: "gtm_id",
+              attribute: "gtm_id",
+              title: "Google Tag Manager ID",
+              type: "text",
+              help: "GTM-XXXXXX with Google Tag Manager ID"
             },
             {
               name: "mode",
@@ -696,7 +707,7 @@
             {
               name: "help",
               type: "static",
-              help: "If you don't configure the languages, the default language(english) will be used.<br>\nThe english translation file can be found in <span style=\"padding: 1px 2px; border-radius: 3px; \nvertical-align: baseline; font-size: 14x; background-color: darkgreen\">public/js/cdmx-cookie-consent/locale</span>"
+              help: "If you don't configure the languages, the default language(english) will be used.<br>\nThe english translation file can be found in <span style=\"padding: 1px 2px; border-radius: 3px; \nvertical-align: baseline; font-size: 14x; background-color: darkgreen\">public/js/jonl-cookie-consent/locale</span>"
             },
             {
               name: "language",
@@ -1206,7 +1217,7 @@
           module: true
         },
         {
-          src: "https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css",
+          src: "https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3.0.0-rc.13/dist/cookieconsent.min.css",
           type: "css"
         }
       ],
@@ -1466,6 +1477,7 @@
     help: "Fired when the language of the component is changed.",
     dataScheme: [
       {
+
         name: "modal",
         type: "object",
         sub: [
