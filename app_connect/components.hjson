@@ -29,7 +29,7 @@
       // ],
       state: "closed",
       anyParent: true,
-      template: "<dmx-cdmx-cookie-consent id=\"@@id@@\" dmx-bind:categories=\"{necessary:{enabled:true,readOnly:true}}\"></dmx-cdmx-cookie-consent>",
+      template: "<dmx-cdmx-cookie-consent id=\"@@id@@\" dmx-bind:categories=\"{necessary:{enabled:true,readOnly:true},google_analytics:{enabled:false,readOnly:false}}\"></dmx-cdmx-cookie-consent>",
       baseName: "consent",
       help: "A component that implements cookie consent on the browser",
       dataScheme: [
@@ -1217,7 +1217,7 @@
           module: true
         },
         {
-          src: "https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3.0.0-rc.13/dist/cookieconsent.min.css",
+          src: "https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3.0.1/dist/cookieconsent.min.css",
           type: "css"
         }
       ],
