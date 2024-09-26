@@ -1,6 +1,6 @@
 {
     "name": "@cdmx/wappler_ac_cookie_consent",
-    "version": "1.8.10",
+    "version": "0.0.1",
     "type": "module",
     "description": "App Connect 2 extension that wraps Cookie Consent library",
     "devDependencies": {
