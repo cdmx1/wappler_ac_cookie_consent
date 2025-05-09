@@ -31,8 +31,6 @@ dmx.Component("cdmx-cookie-consent", {
             });
         }
 
-        console.log(isGoogleAnalyticsEnabled);
-
         const config = {
             language: {
                 default: this.props.language.default,
@@ -50,7 +48,7 @@ dmx.Component("cdmx-cookie-consent", {
             noAutoClearCookies: this.props.noAutoClearCookies,
             revision: this.props.revision,
             onFirstConsent: ({ cookie }) => {
-                console.log("onFirstConsent", cookie);
+
                 if (isGoogleAnalyticsEnabled) {
                     let userSelection = cookie.categories.includes("google_analytics") ? "granted" : "denied";
 
@@ -66,7 +64,6 @@ dmx.Component("cdmx-cookie-consent", {
                 }
             },
             onConsent: ({ cookie }) => {
-                console.log("onConsent", cookie);
                 if (isGoogleAnalyticsEnabled) {
                     let userSelection = cookie.categories.includes("google_analytics") ? "granted" : "denied";
                     gtag("consent", "update", {
@@ -81,7 +78,6 @@ dmx.Component("cdmx-cookie-consent", {
                 }
             },
             onChange: ({ cookie, changedCategories, changedServices }) => {
-                console.log("onChange", cookie, changedCategories, changedServices);
                 if (isGoogleAnalyticsEnabled) {
                     let userSelection = cookie.categories.includes("google_analytics") ? "granted" : "denied";
                     gtag("consent", "update", {
@@ -101,14 +97,10 @@ dmx.Component("cdmx-cookie-consent", {
             }
         };
 
-
-
-        console.log(config);
-
         /**
- * All config. options available here:
- * https://cookieconsent.orestbida.com/reference/configuration-reference.html
- */
+         * All config. options available here:
+         * https://cookieconsent.orestbida.com/reference/configuration-reference.html
+         */
         CookieConsent.run(config);
     },
     methods: {
@@ -183,7 +175,6 @@ const gtm_start_fn = function (w, d, s, l, i) {
 }
 
 function gtag() {
-    console.log('here', arguments);
     dataLayer.push(arguments);
 }
 
